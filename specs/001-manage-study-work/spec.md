@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-05
 
-**Status**: Draft — requirements validated
+**Status**: Requirements consolidated after base architecture selection; application acceptance pending
 
 **Input**: Students can add, edit, and delete courses and assignments; assign titles,
 optional descriptions, and due dates; track completion; view upcoming and overdue work;
@@ -163,7 +163,9 @@ normally, and reopen in the same browser profile to compare the exact saved stat
   cleared (Story 4).
 - **FR-012**: Failed reads/writes MUST show an actionable error with retry guidance, without false
   success, silent data resets, or partially saved changes. Repeated deletion MUST leave other
-  records intact (Story 4; storage/repeated-deletion edge cases).
+  records intact (Story 4; storage/repeated-deletion edge cases). Once saving succeeds, a later
+  display failure MUST state that data was saved and the display needs refresh. It MUST NOT
+  claim rollback or automatically repeat creation.
 - **FR-013**: All core workflows MUST work by keyboard with visible focus, meaningful headings,
   semantic controls, associated form labels, and text cues for errors and status. Normal text
   MUST meet 4.5:1 contrast. At 320 CSS pixels wide, core screens MUST retain all content and
@@ -217,10 +219,31 @@ normally, and reopen in the same browser profile to compare the exact saved stat
   device loss, and browser eviction are outside the guarantee. Backup, export/import, recovery
   after cleared data, and simultaneous cross-tab conflict resolution are excluded.
 - View/filter choices need not persist after reopening; saved course and assignment records do.
-- Reminders, attachments, recurring assignments, grades, analytics, integrations, and deployment
-  are excluded. No third-party service is a requirements dependency.
+- Reminders, attachments, recurring assignments, grades, analytics and integrations are excluded.
+  Deployment analysis and instructions are required; actual hosting/publication is outside this
+  documentation exercise. No third-party service is a requirements dependency.
 - Acceptance requires a browser/device permitting retained app data and a known local date.
   Architecture, storage technology, setup, storage limits/reset behavior, and any migration or
-  recovery procedure will be documented during design under the constitution.
+  recovery procedure are documented in the selected planning and final design documents.
 - No important unresolved choices remain following the user's scope confirmation. These explicit
   defaults may be amended before planning if requested.
+
+## Consolidation clarifications
+
+The student selected the base architecture; implementation details remain in the
+[plan](plan.md) and [final design](../../docs/design-final.md), preserving this document's
+technology-independent requirements. Deployment analysis and instructions are required;
+actual hosting/publication is outside this documentation exercise.
+
+Story 4 additional acceptance scenarios:
+
+5. **Given** a successful save, **When** rendering then fails, **Then** the app reports that
+   data was saved and the display needs refresh; it does not retry creation or claim rollback.
+6. **Given** deliberate manual clearing of the app's stored data, **When** the student reloads
+   the app, **Then** the missing data produces an empty planner. Reload is required after clearing.
+
+Manual browser-storage changes during use and concurrent editing are outside normal use. An
+open page can retain an old in-memory snapshot; it must be reloaded after deliberate clearing.
+Supported browser capabilities and the pending demonstration environment are recorded in
+[quickstart](quickstart.md). Exact versions, measurements and application tests remain pending;
+SC-001–SC-006 are acceptance targets, not passed results.

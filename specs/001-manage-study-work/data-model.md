@@ -52,8 +52,12 @@ selection and storage-load status are memory-only. Course deletion resets its ac
 - Assignment: create incomplete -> edit/move -> complete/incomplete repeatedly -> confirmed delete.
 - Validate target existence at command time. Repeated/stale deletion yields a no-change message.
 - Every accepted mutation passes field and whole-envelope validation, saves once, then publishes.
-- Failure preserves prior storage, committed state and drafts; no orphan or partial updates.
-- Load accepts only a complete valid envelope; absent key is the sole first-use empty case.
+- Validation/serialization/write failure preserves prior storage, committed state and drafts.
+- Once setItem succeeds, the candidate is committed. A later display failure needs refresh;
+  it does not roll back storage and must not automatically repeat creation.
+- Load accepts only a complete valid envelope; an absent key on load produces an empty planner,
+  including after deliberate clearing followed by required reload. Concurrent editing and
+  developer-tools storage changes during use are outside normal use.
 - Upcoming/overdue and filtered lists are computed, not stored. Upcoming is incomplete with date
   >= local today; overdue is incomplete with date < today. AND all predicates.
 - Sort date ascending, English collator title ascending, then original assignment array position.
@@ -61,3 +65,10 @@ selection and storage-load status are memory-only. Course deletion resets its ac
 
 Length counting uses Intl.Segmenter graphemes consistently in UI/rules/storage validation.
 Authoritative validation is the domain/save boundary; native form constraints are additional hints.
+
+## Selected design status
+
+This is the selected base localStorage schema. See [final design](../../docs/design-final.md)
+for save/display failure separation and [quickstart](quickstart.md) for runtime requirements.
+Deployment analysis/instructions are required; actual hosting/publication is outside the exercise.
+Schema, persistence, date and filtering tests are planned; no application test pass is claimed.

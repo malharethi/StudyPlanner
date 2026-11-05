@@ -15,7 +15,7 @@
 All record-specific controls identify records by immutable ID, never array index or name. Duplicate
 courses must be distinguishable. Confirmation identifies the target; cancellation returns focus.
 Success is announced only after persistence succeeds. Use textContent for all user-entered text.
-Forms retain drafts on failure, associate error text with fields and focus the first invalid input.
+Forms retain drafts on validation or write failure, associate field errors and focus the first invalid input.
 
 ## Logical module boundaries
 
@@ -29,7 +29,8 @@ These contracts guide implementation; they are not HTTP endpoints or generated s
 - Storage load returns one of missing, valid(snapshot), inaccessible(error), corrupt(error), or
   unsupportedVersion(version). Missing maps to empty memory state; error states block mutation.
 - Storage save validates the full envelope, serializes and replaces `studyplanner:data` once;
-  it returns success or failure. app.js publishes only success and retains drafts on failure.
+  it returns storage success or failure. app.js commits the candidate on storage success;
+  render errors afterward must not be returned as write failures or retried as creation.
 - Storage access, parsing, serialization and writes are guarded. Never call localStorage.clear().
 
 ## Persisted format example
@@ -56,3 +57,17 @@ These contracts guide implementation; they are not HTTP endpoints or generated s
 The [data model](../data-model.md) is authoritative for field types and invariants. There is no
 network data API. The deployment interface is static HTTP(S) assets with relative module paths;
 planner records stay on the browser's origin. API authentication is not part of this contract.
+
+## Consolidated failure and runtime contract
+
+Before storage success: validation, serialization or setItem failure leaves prior saved state
+unchanged and preserves the draft for correction/retry. After setItem succeeds: commit the
+candidate even if rendering fails; report "Data was saved; refresh the display." Block further
+mutations until refresh/reload and never automatically repeat creation or claim rollback.
+
+Missing key at load means an empty planner, including after deliberate clearing followed by
+reload. Manual clearing requires app reload; concurrent editing and developer-tools storage
+changes during use are outside normal use. No cross-tab synchronization feature is introduced.
+Browser capabilities and exact-version status are in [quickstart](../quickstart.md).
+Deployment analysis/instructions are required; actual hosting/publication is outside the exercise.
+UI/storage tests, including injected post-save render failure, remain pending implementation.

@@ -61,7 +61,7 @@ map to Stories 1–4, FR-001–FR-014 and SC-001–SC-006; they are planned chec
 
 ## Deployment and troubleshooting
 
-Follow the standalone [base architecture](../../docs/architecture-base.md) deployment procedure:
+Follow the [final architecture](../../docs/architecture-final.md) deployment procedure:
 validate locally, copy only web/ assets to an HTTPS static host, verify relative paths and storage
 at the final origin, and retain the origin for subsequent releases. Do not upload test profiles.
 
@@ -70,3 +70,42 @@ must not auto-reset. If the student deliberately discards their data, developer 
 only `studyplanner:data` followed by reload; this is irreversible and not recovery. Clearing all
 browser data is unnecessary. No schema migration exists in v1; future versions need a tested plan.
 Normal retention does not cover cleared data, private browsing, eviction, or device/profile loss.
+
+## Consolidated acceptance environment (R4)
+
+Selected runtime: HTML/CSS/native JavaScript modules and localStorage, with no runtime packages
+or production build. Required browser features: DOM, JSON, ES modules, localStorage,
+Intl.Segmenter, Intl.Collator and crypto.randomUUID. Use HTTPS in production or localhost for
+validation, JavaScript/storage enabled and a standard browser profile. Unsupported capabilities
+must produce a visible unsupported-environment error, not silent weaker validation or saves.
+Target Chrome, Edge, Firefox and Safari versions exposing those APIs; compatibility is pending.
+
+| Environment/evidence | Planned baseline | Verification status |
+| --- | --- | --- |
+| Demonstration device, hardware and OS | Student's demonstration machine | Pending selection/recording |
+| Demonstration browser and exact version | Supported desktop browser with required APIs | Pending selection/verification |
+| Other browser smoke checks | Chrome, Edge, Firefox, Safari | Pending exact versions and results |
+| Node.js | 24 LTS, development only | Exact installed version and verification pending |
+| npm | Compatible with chosen Node runtime | Exact version pending |
+| Playwright and browser binaries | Pinned development dependency | Exact versions/install/tests pending |
+| Static server package | Serves only web/ at localhost:8080 | Package/version/scripts pending implementation |
+| Application tests and SC-001–SC-006 | Targets from specification | Pending implementation/execution |
+| Hosting provider, final origin and deployed revision | Static HTTPS hosting | Pending; actual publication outside exercise |
+
+No runtime or tool installation/version was verified by this documentation consolidation. Record
+versions and results before application acceptance; development Node/npm are not hosting needs.
+
+## Additional review-driven validation (R2–R3)
+
+- Force rendering to fail after a successful setItem. Expect "Data was saved; refresh the display."
+  Block mutations until refresh/reload, do not claim rollback, and do not automatically repeat
+  creation. Reload must show exactly the committed records, without duplicates.
+- Separately force setItem to fail. Expect saved state unchanged, draft retained and correction/
+  retry guidance. These are distinct write and display error paths.
+- In a disposable profile, deliberately remove only studyplanner:data, then reload the app.
+  Reload is required; the missing key must show an empty planner. An open page can retain old
+  memory. Concurrent editing and developer-tools changes during use are outside normal use.
+
+Deployment analysis and instructions are required; actual hosting/publication is outside this
+documentation exercise (R1). All commands above are future implementation contracts, not executed
+checks. [Final design](../../docs/design-final.md) provides the authoritative consolidated behavior.

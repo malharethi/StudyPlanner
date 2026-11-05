@@ -42,4 +42,7 @@ acceptance testing have not been completed.
   measurable usability, response-time, correctness, retention, accessibility, and testing evidence.
 - All 16 quality criteria pass; no outstanding requirements-quality issues were identified.
 - Ready for planning means the requirements are complete; no application outcomes have been measured.
-- No extension hooks are configured. No plan, tasks, or application code created.
+- Historical note: no plan, tasks or application code existed at requirements generation.
+- Current status: the base architecture is selected and planning/consolidation documents exist.
+  Requirements-quality checks remain satisfied; application tests, exact environment versions,
+  performance/accessibility measurements and publication remain pending or outside this exercise.

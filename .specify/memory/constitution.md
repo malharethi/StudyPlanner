@@ -1,19 +1,4 @@
-﻿<!--
-Sync Impact Report
-Version change: unratified scaffold -> 1.0.0 (initial adoption)
-Modified principles: five placeholder principles replaced by:
-- I. Simple, Focused Design
-- II. Readable, Maintainable Code
-- III. Accessible Screens
-- IV. Validated Input and Reliable Storage
-- V. Tested Core Features
-Added sections: Project Scope and Constraints; Development and Review Workflow; concrete Governance.
-Removed sections: none; scaffold examples and placeholders replaced.
-Template synchronization: no updates required; dependent templates read this constitution at runtime.
-Follow-up TODOs: none.
-Review note: remove this temporary report before committing the constitution.
--->
-# StudyPlanner Constitution
+﻿# StudyPlanner Constitution
 
 ## Core Principles
 

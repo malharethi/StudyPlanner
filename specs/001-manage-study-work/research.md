@@ -51,3 +51,25 @@ real storage and DOM behavior. See [Node test runner](https://nodejs.org/api/tes
 [Playwright web server configuration](https://playwright.dev/docs/test-webserver).
 **Alternatives considered**: Manual-only testing misses regressions; a large component testing
 stack has little value for five native modules. Browser restart tests require retained profiles.
+
+## Consolidation decisions after architecture selection
+
+**Decision**: The student selected native HTML/CSS/JavaScript, localStorage and static hosting.
+[Decision record](../../docs/architecture-decision.md) explains why React/IndexedDB was not selected.
+**Rationale**: Fewer dependencies and simpler setup meet the current single-student scope.
+
+**Decision**: Separate pre-save failures from post-save display failures. Once setItem succeeds,
+the candidate remains committed; report later rendering errors as needing refresh, block further
+mutations until refresh/reload, and never retry creation automatically or claim rollback.
+**Rationale**: A display error cannot reverse an already successful persistent write (R2).
+
+**Decision**: Manual storage clearing requires reload; missing key at load means an empty planner.
+Concurrent editing/developer-tools changes during use remain outside normal use (R3).
+**Rationale**: There is no live synchronization of the in-memory snapshot with external edits.
+
+**Decision**: Require deployment analysis and instructions; exclude actual hosting/publication
+from this documentation exercise (R1). Record browser API requirements and pending exact
+browser/device, Node/npm and test-tool versions in [quickstart](quickstart.md) (R4).
+**Rationale**: Proposed support and targets are not verification results. All application tests,
+performance, persistence and accessibility measurements remain pending. No new external research
+or runtime verification was performed during consolidation.

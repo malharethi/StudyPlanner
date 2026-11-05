@@ -9,8 +9,7 @@ Setup resolved the feature identifier as `001-manage-study-work`; actual Git bra
 
 Build a single-page, static HTML/CSS/JavaScript planner. Small native ES modules separate the
 interface, rules, and localStorage. One validated JSON snapshot stores courses and assignments.
-The standalone [base architecture](../../docs/architecture-base.md) defines components, data
-flow, deployment, and limitations for later comparison. This phase creates design documents only.
+The [final architecture](../../docs/architecture-final.md) and [final design](../../docs/design-final.md) consolidate the selected base. Original proposals remain comparison evidence.
 
 ## Technical Context
 
@@ -99,3 +98,25 @@ outside the public artifact. `dates.js` isolates calendar rules, not another ser
 
 No constitution violations or extra infrastructure to justify.
 
+
+## Selected architecture and review resolution
+
+The student selected the base. [Decision](../../docs/architecture-decision.md),
+[final architecture](../../docs/architecture-final.md) and [final design](../../docs/design-final.md)
+are the consolidated reference; original proposals and review are historical evidence.
+
+- R1: Deployment analysis/instructions are required; actual hosting/publication is outside this
+  documentation exercise. No deployment pipeline or application implementation is created here.
+- R2: Separate write and render error boundaries. After setItem succeeds, commit the candidate;
+  display failures need refresh/reload, not rollback or automatic creation retry. Block mutations
+  until refresh/reload. Add an injected post-save-render-failure acceptance check.
+- R3: Clearing browser storage requires reload. Missing key on reload produces an empty planner.
+  Concurrent editing and developer-tools storage changes during use are outside normal use.
+- R4: Runtime capabilities and pending exact environment versions are documented in
+  [quickstart](quickstart.md). Node 24 is a proposed development baseline, not a verified install.
+  Browser/device versions, test tools, all application tests and measurements are pending.
+- R5: Temporary constitution sync comment removed without changing principles/version; checklist
+  now distinguishes its historical requirements-generation note from current planning progress.
+
+Constitution review remains a design-level pass, not application acceptance. Documentation-only
+validation checks links, shared rules and placeholders; SC-001–SC-006 remain unexecuted targets.
