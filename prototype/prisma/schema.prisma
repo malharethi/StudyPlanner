@@ -12,3 +12,45 @@ model EnvironmentCheck {
   message   String
   createdAt DateTime @default(now())
 }
+
+model Group {
+  id       Int       @id @default(autoincrement())
+  name     String
+  members  Member[]
+  expenses Expense[]
+}
+
+model Member {
+  id       Int       @id @default(autoincrement())
+  name     String
+  groupId  Int
+  group    Group     @relation(fields: [groupId], references: [id])
+  payments Expense[]
+  shares   Share[]
+
+  @@index([groupId])
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  description String
+  amountCents Int
+  createdAt   DateTime @default(now())
+  groupId     Int
+  group       Group    @relation(fields: [groupId], references: [id])
+  payerId     Int
+  payer       Member   @relation(fields: [payerId], references: [id])
+  shares      Share[]
+
+  @@index([groupId])
+}
+
+model Share {
+  expenseId   Int
+  memberId    Int
+  amountCents Int
+  expense     Expense @relation(fields: [expenseId], references: [id])
+  member      Member  @relation(fields: [memberId], references: [id])
+
+  @@id([expenseId, memberId])
+}
